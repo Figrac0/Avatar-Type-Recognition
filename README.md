@@ -14,20 +14,28 @@ and to analyze their **explainability, domain bias, and generalization ability**
 
 ---
 
-##  Datasets
-- **Training / Validation** — mixed dataset of ~57K avatar images categorized into:
-  - `real` — real human photos,
-  - `drawing` — hand-drawn or illustrated portraits,
-  - `generated` — AI-synthesized avatars.
-- **Test set (Block 9)** — 300 unseen mixed images (`real_test`, `drawn_test`, `AI_test`).
-- **Out-of-Domain (Block 16)** — 5 external sets:
-  - `children_adults` (human age variation)
-  - `obj` (non-human objects)
-  - `simpsons` (cartoon faces)
-  - `animal_faces` (animal avatars)
-  - `muffin_vs_chihuahua` (visual ambiguity test)
+## Datasets
 
-All images were normalized to `224×224` px, augmented (flip, rotation, noise), and loaded with PyTorch DataLoader.
+- **Training / Validation** — the dataset was aggregated from **20+ different open sources** (including AI-generated image repositories, portrait datasets, and social-media avatar collections) and unified into a single dataset containing:  
+  - `real` — **6,738** real human photos  
+  - `drawing` — **59,275** hand-drawn or illustrated portraits  
+  - `generated` — **6,355** AI-synthesized avatars  
+
+  In total — **≈72,368 images**.  
+  To ensure class balance, a subset of **≈57K images** was used for model training and validation  
+  (≈80% for training, ≈20% for validation).
+
+- **Test set (Block 9)** — **300 unseen mixed images** (`real_test`, `drawn_test`, `AI_test`) used for blind evaluation.
+
+- **Out-of-Domain (Block 16)** — five external datasets for generalization testing:  
+  - `children_adults` — variation in human age  
+  - `obj` — non-human objects and fruits  
+  - `simpsons` — cartoon-style faces  
+  - `animal_faces` — animal avatars  
+  - `muffin_vs_chihuahua` — visual ambiguity stress-test
+
+All images were resized to `224×224` px, normalized, and augmented (flip, rotation, noise).  
+Data loading was handled through **PyTorch DataLoader** with balanced class sampling.
 
 ---
 
@@ -168,23 +176,32 @@ This project provides a **full-stack deep-learning benchmark** for avatar type r
 
 ---
 
-## Датасеты
-- **Обучающая и валидационная выборки** — около 57тыс изображений, разделённых на категории:
-  - `real` — реальные фотографии людей;
-  - `drawing` — рисованные или иллюстрированные портреты;
-  - `generated` — изображения, созданные с помощью нейросетей.
-- **Тестовая выборка (Блок 9)** — 300 ранее не встречавшихся изображений (`real_test`, `drawn_test`, `AI_test`).
-- **Вне-доменные данные (Блок 16)** — 5 отдельных наборов:
-  - `children_adults` — детские и взрослые лица;
-  - `obj` — фотографии объектов и фруктов;
-  - `simpsons` — персонажи мультфильма «Симпсоны»;
-  - `animal_faces` — лица животных;
-  - `muffin_vs_chihuahua` — неоднозначные изображения.
+##  Датасеты
 
-Все данные были нормализованы до размера `224×224`, аугментированы (повороты, шум, зеркалирование)  
-и загружались через `PyTorch DataLoader`.
+- **Обучающая и валидационная выборки** — собраны из **более чем 20 различных открытых источников**  
+  (включая репозитории AI-изображений, портретные датасеты и выборки аватаров из соцсетей).  
+  После объединения и разметки сформирован собственный датасет, включающий:  
+  - `real` — **6 738** реальных фотографий людей  
+  - `drawing` — **59 275** рисованных и иллюстрированных портретов  
+  - `generated` — **6 355** изображений, созданных нейросетями  
 
----
+  **Итого:** около **72 368 изображений**.  
+  Для обучения использовалась сбалансированная выборка из **≈57 000 изображений**,  
+  разделённая на **80% — обучение** и **20% — валидация**.
+
+- **Тестовая выборка (Блок 9)** — **300 ранее не встречавшихся изображений**  
+  (`real_test`, `drawn_test`, `AI_test`), использованных для слепой проверки моделей.
+
+- **Вне-доменные данные (Блок 16)** — 5 наборов для проверки обобщающей способности:  
+  - `children_adults` — различие по возрасту людей  
+  - `obj` — объекты и фрукты  
+  - `simpsons` — мультяшные лица  
+  - `animal_faces` — лица животных  
+  - `muffin_vs_chihuahua` — неоднозначные изображения
+
+Все изображения были приведены к размеру `224×224`, нормализованы и аугментированы  
+(повороты, зеркалирование, шум). Загрузка данных осуществлялась через **PyTorch DataLoader**  
+с балансировкой по классам.
 
 ## Архитектуры моделей
 В исследовании сравнивались **9 моделей CNN**, обученных в одинаковых условиях:
