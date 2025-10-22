@@ -15,7 +15,7 @@ and to analyze their **explainability, domain bias, and generalization ability**
 ---
 
 ##  Datasets
-- **Training / Validation** — mixed dataset of ~3K avatar images categorized into:
+- **Training / Validation** — mixed dataset of ~57K avatar images categorized into:
   - `real` — real human photos,
   - `drawing` — hand-drawn or illustrated portraits,
   - `generated` — AI-synthesized avatars.
@@ -169,7 +169,7 @@ This project provides a **full-stack deep-learning benchmark** for avatar type r
 ---
 
 ## Датасеты
-- **Обучающая и валидационная выборки** — около 3 000 изображений, разделённых на категории:
+- **Обучающая и валидационная выборки** — около 57тыс изображений, разделённых на категории:
   - `real` — реальные фотографии людей;
   - `drawing` — рисованные или иллюстрированные портреты;
   - `generated` — изображения, созданные с помощью нейросетей.
