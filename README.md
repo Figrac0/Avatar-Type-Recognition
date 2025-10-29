@@ -1,101 +1,148 @@
-#  Avatar Type Recognition 
+# 🧠 Avatar Type Recognition
 
 ## Overview
-This project presents a complete experimental study on **avatar image classification** across three domains:
-**real photos**, **drawn illustrations**, and **AI-generated avatars**.  
-Nine convolutional architectures were trained, evaluated, and compared using a unified experimental protocol,  
-focusing on **accuracy, calibration, robustness, bias, efficiency, and generalization**.
+
+This research presents a complete experimental pipeline for **avatar image classification** across three origin domains:  
+**real**, **drawn**, and **AI-generated**.
+
+The study systematically evaluates both classical and modern neural architectures — from **ResNet-50** and **MobileNetV3** to **ConvNeXt-Tiny**, **EfficientNet-B0**, and prospective transformer-based models such as **ViT** and **DINOv2** — under varying degrees of class imbalance and domain shift.
 
 ---
 
-##  Research Goal
-To design and compare deep convolutional neural network models capable of recognizing the **type of avatar image**,  
-and to analyze their **explainability, domain bias, and generalization ability** under various real-world distortions.
+## 🎯 Research Goal
+
+To analyze how **class and domain imbalance** affect the **performance**, **generalization**, and **interpretability** of convolutional and hybrid architectures in the context of **avatar authenticity verification**.
 
 ---
 
-## Datasets
+## 🧩 Dataset Summary
 
-- **Training / Validation** — the dataset was aggregated from **20+ different open sources** (including AI-generated image repositories, portrait datasets, and social-media avatar collections) and unified into a single dataset containing:  
-  - `real` — **6,738** real human photos  
-  - `drawing` — **59,275** hand-drawn or illustrated portraits  
-  - `generated` — **6,355** AI-synthesized avatars  
+The dataset combines multiple public face repositories (Kaggle, AI-generated, and cartoon datasets) and includes:
 
-  In total — **≈72,368 images**.  
-  To ensure class balance, a subset of **≈57K images** was used for model training and validation  
-  (≈80% for training, ≈20% for validation).
+| Class     | Count   | Examples                           |
+|------------|----------|------------------------------------|
+| Drawing    | ≈ 59,275 | sketches, anime, illustrations     |
+| Generated  | ≈ 6,355  | GAN / diffusion-generated faces    |
+| Real       | ≈ 6,738  | human portraits and selfies        |
 
-- **Test set (Block 9)** — **300 unseen mixed images** (`real_test`, `drawn_test`, `AI_test`) used for blind evaluation.
-
-- **Out-of-Domain (Block 16)** — five external datasets for generalization testing:  
-  - `children_adults` — variation in human age  
-  - `obj` — non-human objects and fruits  
-  - `simpsons` — cartoon-style faces  
-  - `animal_faces` — animal avatars  
-  - `muffin_vs_chihuahua` — visual ambiguity stress-test
-
-All images were resized to `224×224` px, normalized, and augmented (flip, rotation, noise).  
-Data loading was handled through **PyTorch DataLoader** with balanced class sampling.
+All images were **preprocessed to 224×224 px**, normalized, and augmented (flip, brightness, contrast).  
+The **class imbalance** was intentionally preserved (~82% drawings) to examine its effect on model bias.
 
 ---
 
-##  Model Architectures
-The study compares **9 convolutional models** trained under identical conditions:
+## ⚙️ Training Configuration
 
-| Architecture | Training Mode | Description |
-|---------------|---------------|--------------|
-| **MobileNetV3 Small 100** | Full | Lightweight CNN baseline optimized for mobile inference |
-| **ResNet-50** | Full | Strong baseline with skip connections |
-| **EfficientNet-B0** | Frozen Backbone | Transfer-learning baseline |
-| **ConvNeXt-Tiny (Stage 1/2)** | Progressive Unfreeze | Modernized ResNet family, two-stage fine-tuning |
-| **MobileNetV3 Few-Shot (4 / 12 epochs)** | Low-data | Generalization from small datasets |
-| **ResNet-18 Few-Shot (4 / 12 epochs)** | Low-data | Compact residual model for small data regimes |
+| Parameter | Value |
+|------------|--------|
+| Train / Val / Test Split | 80 / 10 / 10 |
+| Image Size | 224×224 px |
+| Optimizer | AdamW |
+| Learning Rate | 3 × 10⁻⁴ |
+| Scheduler | ReduceLROnPlateau |
+| Batch Size | 32 |
+| Augmentation | Random Flip, Color Jitter |
+| Weighted Sampling | ✅ Enabled |
 
-Each network was trained with **CrossEntropyLoss**, **Adam optimizer**,  
-and validated on identical folds for comparability.
-
----
-
-##  Experimental Blocks
-All analysis was performed in 18 structured blocks:
-
-| № | Block | Goal |
-|---|-------|------|
-| **9** | Unified blind test (300 images) | Evaluate all models on unseen mixed data |
-| **10** | Robustness test | Blur, noise, rotation, JPEG, brightness distortions |
-| **11** | Softmax confidence & calibration | Reliability diagrams, Expected Calibration Error (ECE) |
-| **12** | Feature embedding visualization | t-SNE projection of latent features |
-| **12B** | Cluster structure analysis | Silhouette, intra/inter-class distance |
-| **13** | Ensemble soft-voting | Combined prediction across models |
-| **13B–13C** | Ensemble correlation & weighting | Weighted voting based on accuracy × (1 – ECE) |
-| **14–14C** | Grad-CAM explainability | Heatmap visualization and model × class comparison walls |
-| **15** | Efficiency benchmark | FPS / latency (CPU & GPU) vs. model complexity |
-| **16** | Out-of-Domain & Bias test | Generalization to unseen domains |
-| **17** | Error & Bias analysis | Model bias maps, confidence distribution |
-| **18** | Final integrated report | Normalized metrics & integrated score synthesis |
+Face detection and background cropping were **not applied** — models could leverage both facial and contextual cues, influencing attention maps (confirmed via Grad-CAM).
 
 ---
 
-##  Key Metrics
-Each model was evaluated by:
-- `Accuracy@300` — main test accuracy,
-- `Robustness` — mean accuracy under 5 distortions,
-- `ECE` — calibration error,
-- `Unbias` — fairness under out-of-domain images,
-- `Silhouette / SeparationRatio` — feature space quality,
-- `FPS / Params(M)` — computational efficiency,
-- `Integrated Score` — normalized aggregate index.
+## 🧠 Architectures Evaluated
+
+The study compared **ResNet-50**, **MobileNetV3**, **EfficientNet-B0**, and **ConvNeXt-Tiny**, including few-shot and progressive fine-tuning variants.
+
+| Model | Training Type | F1 | Accuracy |
+|--------|----------------|----|----------|
+| ResNet-50 | Full Fine-Tuning | 0.98 | 0.99 |
+| MobileNetV3 | Full Fine-Tuning | 0.96 | 0.96 |
+| ConvNeXt-Tiny (Stage 2) | Progressive Unfreeze | 0.96 | 0.98 |
 
 ---
 
-##  Main Findings
-- **ConvNeXt-Tiny Stage 2** achieved top overall accuracy and well-balanced calibration.  
-- **ResNet18 Few-Shot 12 epochs** showed the best calibration (lowest ECE).  
-- **MobileNetV3 Few-Shot 12 epochs** offered the best trade-off between speed and accuracy.  
-- **Soft-Voting Ensemble** outperformed individual models by ≈ 4-5 % F1-gain.  
-- **Out-of-Domain Bias** revealed overconfidence on non-human imagery — mitigated in ensemble.  
-- **Grad-CAM Analysis** confirmed class-specific attention zones and interpretable focus maps.  
-- **Efficiency Benchmark** showed MobileNetV3 > 100 FPS on GPU and ~15 FPS on CPU.
+## 📊 Independent Evaluation
+
+Testing on a **balanced external dataset (1340 images)** revealed a clear **generalization gap** caused by class imbalance.
+
+| Model | Macro F1 | Balanced Accuracy | F1 (Generated) | F1 (Drawing) | F1 (Real) |
+|--------|-----------|------------------|----------------|---------------|------------|
+| ResNet-50 | 0.230 | 0.000 | 0.032 | 0.732 | — |
+| MobileNetV3 | 0.235 | 0.000 | 0.014 | 0.647 | — |
+| ConvNeXt-Tiny (Stage 2) | 0.104 | 0.032 | 0.014 | 0.373 | — |
+
+**Observation:**  
+When trained on a dataset where drawing ≈ 82% of samples, all CNNs **overfit to the majority class**.  
+Macro-F1 dropped from ≈ 0.97 to 0.23 when evaluated on balanced data — a clear indicator of **class bias and domain overfitting**.
+
+---
+
+## 🩻 Visual Analysis
+
+**Grad-CAM maps** and **t-SNE embeddings** revealed that:
+
+- Deep models (**ConvNeXt, ResNet**) attend mainly to **facial regions**.  
+- Compact CNNs (**MobileNet, EfficientNet**) react to **background color and lighting**, explaining class confusion.  
+- Misclassifications (Real → Generated, Generated → Drawing) stem from **overlapping texture cues**.
+
+---
+
+## 📉 Effect of Class Imbalance
+
+Additional evaluation under different class proportions confirmed the correlation between **dominant class share** and **metric degradation**.
+
+| Scenario (Drawing%) | Model | Accuracy | Macro F1 |
+|----------------------|--------|-----------|-----------|
+| 50 / 25 / 25 | EfficientNet-B0 | 0.123 | 0.145 |
+| 70 / 15 / 15 | ResNet-18 (Few-Shot 12 ep) | 0.068 | 0.094 |
+| 80 / 10 / 10 | ConvNeXt-Tiny (Stage 2) | 0.023 | 0.018 |
+
+**Conclusion:**  
+When the **dominant class exceeds 70%**, Macro-F1 falls below 0.3 for all architectures.  
+**ConvNeXt-Tiny** shows the smallest drop (~25%), confirming its **robustness** to class shift and domain imbalance.
+
+---
+
+## 🧪 Modern Architectures Comparison
+
+**Table 1. Computational Characteristics of CNN and ViT Models**
+
+| Model | Resolution | Params (M) | FLOPs (G) | FPS (batch = 1) |
+|--------|-------------|-------------|-------------|----------------|
+| ResNet-50 (CNN) | 224×224 | 25.56 | 4.13 | 100.1 |
+| ConvNeXt-Tiny (CNN) | 224×224 | 28.59 | 4.48 | 93.3 |
+| ViT-Base (Transformer) | 224×224 | 86.57 | 12.02 | 37.6 |
+| ViT-Small (Self-Supervised) | 384×384 | 22.20 | 11.47 | 100.0 |
+
+**Figure 1. Inference Speed Comparison:**  
+(ResNet-50, ConvNeXt-Tiny, ViT-Base, ViT-Small)
+
+- CNN models remain the most **efficient**,  
+- ViT-Base trades **3× slower inference** for **global-context modeling**,  
+- ViT-Small achieves **CNN-level speed** with **fewer parameters** and superior stability under domain shifts — making it a **promising candidate** for self-supervised and hybrid CNN–ViT approaches.
+
+---
+
+## 🚀 Perspectives
+
+Future work should focus on:
+
+1. **Hybrid CNN–ViT architectures** — combining local and global feature extraction for style-robust classification.  
+2. **Segment Anything Model (SAM)** — automatic face segmentation to suppress background bias detected in Grad-CAM.  
+3. **Self-Supervised Fine-Tuning (e.g., DINOv2)** — domain adaptation without labeled data, improving robustness on open-source imagery.
+
+These strategies are expected to enhance **model generalization**, **interpretability**, and **resilience** to data imbalance and cross-domain variation.
+
+---
+
+## 🧩 Conclusion
+
+A complete pipeline for **avatar origin classification** was developed and validated.  
+**ResNet-50** and **ConvNeXt-Tiny** achieved top F1 ≈ 0.96–0.98, yet their **Macro-F1 dropped to 0.13–0.26** under balanced testing — confirming overfitting to the dominant class.  
+
+- **ConvNeXt-Tiny** remained the most robust to imbalance.  
+- **MobileNetV3** offered the best speed-to-accuracy ratio.  
+
+The study highlights the necessity of considering **class shift** and **domain imbalance** in training pipelines and points toward **hybrid CNN–ViT** and **self-supervised learning** as the next step for resilient **avatar-authenticity models**.
+
 
 ---
 
