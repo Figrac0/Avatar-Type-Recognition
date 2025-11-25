@@ -147,38 +147,34 @@ Qualitative experiments complement the numerical metrics and help to interpret m
 
 <p align="center">
   <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/1.png" width="450"/><br/>
-  Figure 2 – Class distribution in the merged training dataset (drawing dominates with about 82 percent of images).
+  Figure 1 – Class distribution in the merged training dataset (drawing dominates with about 82 percent of images).
 </p>
 
 <p align="center">
   <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/3.png" width="450"/><br/>
-  Figure 3 – Comparison of macro F1 scores on the main imbalanced dataset for ResNet-50, MobileNetV3, EfficientNet-B0 and ConvNeXt-Tiny, including few-shot variants.
+  Figure 2 – Comparison of macro F1 scores on the main imbalanced dataset for ResNet-50, MobileNetV3, EfficientNet-B0 and ConvNeXt-Tiny, including few-shot variants.
 </p>
 
 <p align="center">
   <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/4.png" width="450"/><br/>
-  Figure 4 – Classwise F1 metrics on the independent balanced test set, showing strong bias toward the drawing class and degradation for generated and real avatars.
+  Figure 3 – Classwise F1 metrics on the independent balanced test set, showing strong bias toward the drawing class and degradation for generated and real avatars.
 </p>
 
 <p align="center">
   <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/5.png" width="450"/><br/>
-  Figure 5 – Grad-CAM maps for ResNet-50 on generated images misclassified as drawing. Activations focus on texture and colour transitions rather than facial structure.
+  Figure 4 – Grad-CAM maps for ResNet-50 on generated images misclassified as drawing. Activations focus on texture and colour transitions rather than facial structure.
 </p>
 
 <p align="center">
   <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/6.png" width="450"/><br/>
-  Figure 6 – Grad-CAM maps for ConvNeXt-Tiny on real images misclassified as generated. Attention shifts toward background and specular highlights instead of facial regions.
+  Figure 5 – Grad-CAM maps for ConvNeXt-Tiny on real images misclassified as generated. Attention shifts toward background and specular highlights instead of facial regions.
 </p>
 
 <p align="center">
   <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/7.png" width="450"/><br/>
-  Figure 7 – t-SNE embedding of feature vectors for ConvNeXt-Tiny Stage 1. Drawing avatars form a compact cluster, while real and generated samples partially overlap.
+  Figure 6 – t-SNE embedding of feature vectors for ConvNeXt-Tiny Stage 1. Drawing avatars form a compact cluster, while real and generated samples partially overlap.
 </p>
 
-<p align="center">
-  <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/ResNet18_FewShot12ep_reliability.png" width="450"/><br/>
-  <em>Reliability diagram — ResNet18 Few-Shot 12 epochs (calibration curve)</em>
-</p>
 
 <p align="center">
   <img src="https://github.com/Figrac0/Avatar-Type-Recognition/blob/main/assets/bias_map_models.png" width="450"/><br/>
