@@ -35,7 +35,7 @@ The final merged dataset after preprocessing has the following class distributio
 | Real     | ≈ 6 738 | human portraits and selfies               |
 
 Key properties:
-
+ 
 - All images converted to JPG and resized to 224×224 px  
 - Standard normalization and data augmentation (random horizontal flip, color jitter)  
 - Overall class imbalance: drawing ≈ 82 %, generated ≈ 9 %, real ≈ 9 %  
