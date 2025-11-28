@@ -6,7 +6,7 @@ The work studies how strong class imbalance in the training data affects the qua
 The repository corresponds to the experiments described in the research paper on three-class avatar classification under class and domain imbalance. 
 
 ---
-
+ 
 ## Research Objective
 
 To quantify the impact of class imbalance on the quality of avatar origin classification for digital identification tasks and to compare the robustness of several convolutional architectures under the same conditions.
