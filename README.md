@@ -3,7 +3,7 @@
 This repository contains the experimental pipeline for avatar image classification into three origin types: real photos, hand-drawn images, and AI-generated images.  
 The work studies how strong class imbalance in the training data affects the quality and robustness of modern convolutional architectures and their few-shot variants.
 
-The repository corresponds to the experiments described in the research paper on three-class avatar classification under class and domain imbalance.
+The repository corresponds to the experiments described in the research paper on three-class avatar classification under class and domain imbalance. 
 
 ---
 
